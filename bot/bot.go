@@ -2,7 +2,9 @@ package bot
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/monkeyworknet/monkeybot/config"
@@ -62,14 +64,43 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		if command == "!insult" {
 			insult, _ := PersonalAttack(content)
 			_, _ = s.ChannelMessageSend(m.ChannelID, insult)
-
 		}
 
 		if command == "!praise" {
 			praise, _ := Compliment(content)
 			_, _ = s.ChannelMessageSend(m.ChannelID, praise)
-
 		}
+
+		if command == "!joke" {
+			s1 := rand.NewSource(time.Now().UnixNano())
+			r1 := rand.New(s1)
+			c1 := r1.Intn(4)
+			fmt.Println(c1)
+
+			if c1 == 0 {
+				joke, _ := ChuckJoke()
+				_, _ = s.ChannelMessageSend(m.ChannelID, joke)
+			}
+			if c1 == 1 {
+				joke, _ := DadJokes()
+				_, _ = s.ChannelMessageSend(m.ChannelID, joke)
+			}
+			if c1 == 2 {
+				joke, _ := MommaJokes()
+				_, _ = s.ChannelMessageSend(m.ChannelID, joke)
+			}
+			if c1 == 3 {
+				_, _ = s.ChannelMessageSend(m.ChannelID, "Grabbing a dirty joke.. may take a moment")
+				joke, _ := DirtyJokes()
+				_, _ = s.ChannelMessageSend(m.ChannelID, joke)
+			}
+		}
+
+		if command == "!angry" {
+			rant, _ := Trbmb()
+			_, _ = s.ChannelMessageSend(m.ChannelID, rant)
+		}
+
 	}
 
 }

@@ -23,8 +23,6 @@ func DadJokes() (string, error) {
 	resp, err := client.Do(req)
 	defer resp.Body.Close()
 
-	fmt.Println(resp.Body)
-
 	var joke struct {
 		Joke string `json:"joke"`
 	}
