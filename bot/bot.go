@@ -51,20 +51,25 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			return
 		}
 
-		if m.Content == "!ping" {
+		content := strings.Split(m.Content, " ")
+		command := content[0]
+		fmt.Println(content)
+
+		if command == "!ping" {
 			_, _ = s.ChannelMessageSend(m.ChannelID, "Pong")
 		}
 
-		if m.Content == "!joke" {
-			joke, _ := Insults()
-			_, _ = s.ChannelMessageSend(m.ChannelID, joke)
+		if command == "!insult" {
+			insult, _ := PersonalAttack(content)
+			_, _ = s.ChannelMessageSend(m.ChannelID, insult)
+
+		}
+
+		if command == "!praise" {
+			praise, _ := Compliment(content)
+			_, _ = s.ChannelMessageSend(m.ChannelID, praise)
 
 		}
 	}
 
-}
-
-func Stop() {
-	fmt.Println("Stopping Bot..")
-	GoBot.Close()
 }
