@@ -3,6 +3,7 @@ package bot
 import (
 	"fmt"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 
@@ -99,6 +100,29 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		if command == "!angry" {
 			rant, _ := Trbmb()
 			_, _ = s.ChannelMessageSend(m.ChannelID, rant)
+		}
+
+		if command == "!c2f" {
+			cc, err := strconv.ParseFloat(content[1], 32)
+			if err != nil {
+				fmt.Println("C2F Failure")
+			}
+			c := float32(cc)
+			var f float32
+			f = ((c * 9) / 5) + 32
+			ff := strconv.FormatFloat(float64(f), 'f', 0, 32)
+			_, _ = s.ChannelMessageSend(m.ChannelID, content[1]+" Canadian Degrees equals "+ff+" Freedom Degrees")
+		}
+		if command == "!f2c" {
+			ff, err := strconv.ParseFloat(content[1], 32)
+			if err != nil {
+				fmt.Println("F2C Failure")
+			}
+			f := float32(ff)
+			var c float32
+			c = ((f - 32) * 5) / 9
+			cc := strconv.FormatFloat(float64(c), 'f', 0, 32)
+			_, _ = s.ChannelMessageSend(m.ChannelID, content[1]+" Freedom Degrees equals "+cc+" Canadian Degrees")
 		}
 
 	}
