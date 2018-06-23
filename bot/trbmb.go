@@ -8,25 +8,19 @@ import (
 
 func Trbmb() (string, error) {
 
-	fmt.Println("Fetching a TRBMB Joke")
-	resp, err := http.Get("http://api.chew.pro/trbmb")
-	if err != nil {
-		println(err)
+        fmt.Println("Fetching a TRBMB Joke")
+        resp, err := http.Get("http://api.chew.pro/trbmb")
+        if err != nil {
+                println(err)
 		return "", err
-	}
+        }
 
-	defer resp.Body.Close()
+        defer resp.Body.Close()
 
-	// returning a json Array ... how to deal???
+        var joke []string
 
-	var joke struct {
-		Joke string `""`
-	}
+        _ = json.NewDecoder(resp.Body).Decode(&joke)
 
-	if err := json.NewDecoder(resp.Body).Decode(&joke); err != nil {
-		return "", err
-	}
-
-	return joke.Joke, nil
+	return joke[0], nil
 
 }
