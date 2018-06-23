@@ -4,24 +4,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/monkeyworknet/monkeybot/config"
 )
 
 func WhoIsOnline() ([]string, int, error) {
 
-	servername := "play.crafttheory.net"
-	serverport := "25565"
+	servername := config.MCServer
+	serverport := config.MCPort
 	empty := []string{"empty result"}
 	serverempty := []string{"Nobody is online"}
 
 	// Check to see if anyone is online before we do anything
 
-        resp, err := http.Get("https://api.minetools.eu/query/" + servername + "/" + serverport)
+	resp, err := http.Get("https://api.minetools.eu/query/" + servername + "/" + serverport)
 
-        if err != nil {
-                fmt.Println("FATAL Error getting Playerlist (minetools down?)  -  ", err)
-                return empty, 0,  err
-        }
-
+	if err != nil {
+		fmt.Println("FATAL Error getting Playerlist (minetools down?)  -  ", err)
+		return empty, 0, err
+	}
 
 	var NumberPlayers struct {
 		Playercount int `json:"Players"`
@@ -29,12 +30,12 @@ func WhoIsOnline() ([]string, int, error) {
 
 	if err := json.NewDecoder(resp.Body).Decode(&NumberPlayers); err != nil {
 		fmt.Println("Error Decoding PlayerCountlist  -  ", err)
-		return empty, 0,  err
+		return empty, 0, err
 	}
 
 	if NumberPlayers.Playercount == 0 {
 		fmt.Println("No One Online")
-		return serverempty, 0,  nil
+		return serverempty, 0, nil
 	}
 
 	// Grab the player list

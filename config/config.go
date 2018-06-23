@@ -9,6 +9,8 @@ import (
 var (
 	Token     string
 	BotPrefix string
+	MCServer  string
+	MCPort    string
 
 	config *configStruct
 )
@@ -16,6 +18,8 @@ var (
 type configStruct struct {
 	Token     string `json:"Token"`
 	BotPrefix string `json:"BotPrefix"`
+	MCServer  string `json:"MCServer"`
+	MCPort    string `json:"MCPort": "2556"`
 }
 
 func ReadConfig() error {
@@ -37,6 +41,8 @@ func ReadConfig() error {
 
 	Token = config.Token
 	BotPrefix = config.BotPrefix
+	MCServer = config.MCServer
+	MCPort = config.MCPort
 
 	return nil
 
