@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/monkeyworknet/monkeybot/config"
 )
@@ -18,6 +19,10 @@ import (
 //https://mholt.github.io/json-to-go/
 
 func Weather(command []string) (string, error) {
+
+	command = append(command[:0], command[1:]...)
+
+	city := strings.Join(command, "%20")
 
 	var WeatherResponse struct {
 		Coord struct {
@@ -60,12 +65,7 @@ func Weather(command []string) (string, error) {
 		Cod  int    `json:"cod"`
 	}
 
-	fmt.Println(command[1])
-	if command[1] == "" {
-		return "Sorry Please Specify a City", nil
-	}
-
-	UrlString := "https://api.openweathermap.org/data/2.5/weather?q=" + command[1] + "&type=like&units=metric&appid=" + config.WeatherAPI
+	UrlString := "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&type=like&units=metric&appid=" + config.WeatherAPI
 
 	fmt.Println("Fetching Weather")
 	fmt.Println(UrlString)
@@ -90,7 +90,7 @@ func Weather(command []string) (string, error) {
 		reportedtemp = strconv.FormatFloat(ftemp, 'f', 1, 64) + " F"
 	}
 
-	returnstring := "The weather in " + WeatherResponse.Name + " is " + WeatherResponse.Weather[0].Description + ".   The Temp is " + reportedtemp
+	returnstring := WeatherResponse.Name + "'s weather is described as " + WeatherResponse.Weather[0].Description + ".   The Temp is currently " + reportedtemp
 
 	return returnstring, nil
 
