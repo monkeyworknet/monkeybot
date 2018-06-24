@@ -72,14 +72,20 @@ func Weather(command []string) (string, error) {
 
 	resp, err := http.Get(UrlString)
 	if err != nil {
-		println(err)
+		fmt.Println("Unable to reach weather services", err)
 		return "Unable to reach weather services", err
 	}
 
 	defer resp.Body.Close()
 
 	if err := json.NewDecoder(resp.Body).Decode(&WeatherResponse); err != nil {
-		return "Unable to find City", err
+		fmt.Println("Error in decoding weather... maybe not found?", err)
+	}
+
+	if WeatherResponse.Cod == 0 {
+		fmt.Println("City Not Found")
+		return "City Not Found", nil
+
 	}
 
 	fmt.Println(WeatherResponse.Name, WeatherResponse.Sys.Country, WeatherResponse.Main.Temp, WeatherResponse.Weather[0].Description)
