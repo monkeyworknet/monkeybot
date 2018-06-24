@@ -65,7 +65,7 @@ func Weather(command []string) (string, error) {
 		Cod  int    `json:"cod"`
 	}
 
-	UrlString := "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&type=like&units=metric&appid=" + config.WeatherAPI
+	UrlString := "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&type=accurate&units=metric&appid=" + config.WeatherAPI
 
 	fmt.Println("Fetching Weather")
 	fmt.Println(UrlString)
