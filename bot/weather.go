@@ -73,22 +73,19 @@ func Weather(command []string) (string, error) {
 	resp, err := http.Get(UrlString)
 	if err != nil {
 		println(err)
-		return "", err
+		return "Unable to reach weather services", err
 	}
 
 	defer resp.Body.Close()
 
 	if err := json.NewDecoder(resp.Body).Decode(&WeatherResponse); err != nil {
-		return "", err
+		return "Unable to find City", err
 	}
+
 	fmt.Println(WeatherResponse.Name, WeatherResponse.Sys.Country, WeatherResponse.Main.Temp, WeatherResponse.Weather[0].Description)
 
-	reportedtemp := strconv.FormatFloat(WeatherResponse.Main.Temp, 'f', 1, 64) + " C"
-
-	if WeatherResponse.Sys.Country == "US" {
-		ftemp := (WeatherResponse.Main.Temp * 9 / 5) + 32
-		reportedtemp = strconv.FormatFloat(ftemp, 'f', 1, 64) + " F"
-	}
+	ftemp := (WeatherResponse.Main.Temp * 9 / 5) + 32
+	reportedtemp := strconv.FormatFloat(WeatherResponse.Main.Temp, 'f', 1, 64) + " C / " + strconv.FormatFloat(ftemp, 'f', 1, 64) + " F"
 
 	returnstring := WeatherResponse.Name + "'s weather is described as " + WeatherResponse.Weather[0].Description + ".   The Temp is currently " + reportedtemp
 
