@@ -66,10 +66,11 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 					!joke (I'll tell you a funny joke:  Chuck Norris Jokes, Momma Jokes, Dad Jokes, Dirty Jokes)
 					!thatreally (I'll tell you what really blanks my blank)  
 					!c2f ## (I'll convert Canadian Temps to Freedom Temps)  
-                                        !f2c ## (I'll convert Freedom Temps to Canadian Temps)  
-                                        !flip heads/tails (I'll flip a coin and tell if your right 
+                    !f2c ## (I'll convert Freedom Temps to Canadian Temps)  
+                    !flip heads/tails (I'll flip a coin and tell if your right 
 					!cat (will return a random kitty picture)
 					!dog <breed> (will return a random dog pic, you can also include breed to narrow it down)
+					!weather <city> (will return current weather for the city in question)
 
 			`
 			_, _ = s.ChannelMessageSend(m.ChannelID, output)
