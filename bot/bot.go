@@ -96,6 +96,11 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			_, _ = s.ChannelMessageSend(m.ChannelID, praise)
 		}
 
+		if command == "!weather" {
+			praise, _ := Weather(content)
+			_, _ = s.ChannelMessageSend(m.ChannelID, praise)
+		}
+
 		if command == "!joke" {
 			c1 := rand.Intn(4)
 			fmt.Println(c1)

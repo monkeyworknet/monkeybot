@@ -7,19 +7,21 @@ import (
 )
 
 var (
-	Token     string
-	BotPrefix string
-	MCServer  string
-	MCPort    string
+	Token      string
+	BotPrefix  string
+	MCServer   string
+	MCPort     string
+	WeatherAPI string
 
 	config *configStruct
 )
 
 type configStruct struct {
-	Token     string `json:"Token"`
-	BotPrefix string `json:"BotPrefix"`
-	MCServer  string `json:"MCServer"`
-	MCPort    string `json:"MCPort": "2556"`
+	Token      string `json:"Token"`
+	BotPrefix  string `json:"BotPrefix"`
+	MCServer   string `json:"MCServer"`
+	MCPort     string `json:"MCPort"`
+	WeatherAPI string `json:"WeatherAPI"`
 }
 
 func ReadConfig() error {
@@ -43,6 +45,7 @@ func ReadConfig() error {
 	BotPrefix = config.BotPrefix
 	MCServer = config.MCServer
 	MCPort = config.MCPort
+	WeatherAPI = config.WeatherAPI
 
 	return nil
 
