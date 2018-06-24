@@ -83,10 +83,11 @@ func Weather(command []string) (string, error) {
 	}
 	fmt.Println(WeatherResponse.Name, WeatherResponse.Sys.Country, WeatherResponse.Main.Temp, WeatherResponse.Weather[0].Description)
 
-	reportedtemp := strconv.FormatFloat(WeatherResponse.Main.Temp, 'E', -1, 64) + " C"
+	reportedtemp := strconv.FormatFloat(WeatherResponse.Main.Temp, 'f', 4, 64) + " C"
+
 	if WeatherResponse.Sys.Country == "US" {
 		ftemp := (WeatherResponse.Main.Temp * 9 / 5) + 32
-		reportedtemp = strconv.FormatFloat(ftemp, 'E', -1, 64) + " F"
+		reportedtemp = strconv.FormatFloat(ftemp, 'f', 4, 64) + " F"
 	}
 
 	returnstring := "The weather in " + WeatherResponse.Name + " is " + WeatherResponse.Weather[0].Description + ".   The Temp is " + reportedtemp
