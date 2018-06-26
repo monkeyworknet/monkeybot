@@ -162,7 +162,7 @@ func WeatherZip(command []string) (string, error) {
 
 	if WeatherResponse.Cod == 0 {
 		fmt.Println("Zip Not Found")
-		return "Zip Not Found, if non-USA do <zipcode>,<countrycode> where country code is 2 characters", nil
+		return "Zip Not Found, currently only supporting USA", nil
 
 	}
 
