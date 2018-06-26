@@ -20,10 +20,6 @@ import (
 
 func Weather(command []string) (string, error) {
 
-	command = append(command[:0], command[1:]...)
-
-	city := strings.Join(command, "%20")
-
 	var WeatherResponse struct {
 		Coord struct {
 			Lon float64 `json:"lon"`
@@ -64,8 +60,20 @@ func Weather(command []string) (string, error) {
 		Name string `json:"name"`
 		Cod  int    `json:"cod"`
 	}
+	var UrlString string
 
-	UrlString := "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&type=accurate&units=metric&appid=" + config.WeatherAPI
+	if command[1] == "zip" {
+		command = append(command[:1], command[2:]...)
+		city := strings.Join(command, "%20")
+		UrlString = "https://api.openweathermap.org/data/2.5/weather?zip=" + city + "&units=metric&appid=" + config.WeatherAPI
+
+	} else {
+
+		command = append(command[:0], command[1:]...)
+		city := strings.Join(command, "%20")
+		UrlString = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&type=accurate&units=metric&appid=" + config.WeatherAPI
+
+	}
 
 	fmt.Println("Fetching Weather")
 	fmt.Println(UrlString)
@@ -88,12 +96,18 @@ func Weather(command []string) (string, error) {
 
 	}
 
+	extratext := ""
+
+	if WeatherResponse.Sys.Country == "US" {
+		extratext = "\n For US cities you can use !weather zip <zipcode> to possibly get more accurate results"
+	}
+
 	fmt.Println(WeatherResponse.Name, WeatherResponse.Sys.Country, WeatherResponse.Main.Temp, WeatherResponse.Weather[0].Description)
 
 	ftemp := (WeatherResponse.Main.Temp * 9 / 5) + 32
 	reportedtemp := strconv.FormatFloat(WeatherResponse.Main.Temp, 'f', 1, 64) + " C / " + strconv.FormatFloat(ftemp, 'f', 1, 64) + " F"
 
-	returnstring := WeatherResponse.Name + "'s weather is described as " + WeatherResponse.Weather[0].Description + ".   The Temp is currently " + reportedtemp
+	returnstring := WeatherResponse.Name + "'s weather is described as " + WeatherResponse.Weather[0].Description + ".   The Temp is currently " + reportedtemp + extratext
 
 	return returnstring, nil
 
