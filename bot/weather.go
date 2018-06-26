@@ -83,14 +83,7 @@ func Weather(command []string) (string, error) {
 
 	if WeatherResponse.Cod == 0 {
 		fmt.Println("City Not Found")
-		return "City Not Found", nil
-
-	}
-
-	extratext := ""
-
-	if WeatherResponse.Sys.Country == "US" {
-		extratext = "\n If City not found try !weatherzip <zipcode>"
+		return "City Not Found, try !weatherzip <zipcode>", nil
 	}
 
 	fmt.Println(WeatherResponse.Name, WeatherResponse.Sys.Country, WeatherResponse.Main.Temp, WeatherResponse.Weather[0].Description)
@@ -98,7 +91,7 @@ func Weather(command []string) (string, error) {
 	ftemp := (WeatherResponse.Main.Temp * 9 / 5) + 32
 	reportedtemp := strconv.FormatFloat(WeatherResponse.Main.Temp, 'f', 1, 64) + " C / " + strconv.FormatFloat(ftemp, 'f', 1, 64) + " F"
 
-	returnstring := WeatherResponse.Name + "'s weather is described as " + WeatherResponse.Weather[0].Description + ".   The Temp is currently " + reportedtemp + extratext
+	returnstring := WeatherResponse.Name + "'s weather is described as " + WeatherResponse.Weather[0].Description + ".   The Temp is currently " + reportedtemp
 
 	return returnstring, nil
 
@@ -148,7 +141,7 @@ func WeatherZip(command []string) (string, error) {
 	}
 
 	var UrlString string
-	command = append(command[:1], command[2:]...)
+	command = append(command[:0], command[1:]...)
 	city := strings.Join(command, "%20")
 	UrlString = "https://api.openweathermap.org/data/2.5/weather?zip=" + city + "&units=metric&appid=" + config.WeatherAPI
 
@@ -169,7 +162,7 @@ func WeatherZip(command []string) (string, error) {
 
 	if WeatherResponse.Cod == 0 {
 		fmt.Println("Zip Not Found")
-		return "Zip Not Found", nil
+		return "Zip Not Found, if non-USA do <zipcode>,<countrycode> where country code is 2 characters", nil
 
 	}
 
