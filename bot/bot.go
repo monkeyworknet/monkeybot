@@ -70,8 +70,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
                     !flip heads/tails (I'll flip a coin and tell if your right 
 					!cat (will return a random kitty picture)
 					!dog <breed> (will return a random dog pic, you can also include breed to narrow it down)
-					!weather <city> (will return current weather for the city in question)
-
+					!weather <city, state> (will return current weather for the city in question)
 			`
 			_, _ = s.ChannelMessageSend(m.ChannelID, output)
 		}
@@ -99,10 +98,6 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 		if command == "!weather" {
 			praise, _ := Weather(content)
-			_, _ = s.ChannelMessageSend(m.ChannelID, praise)
-		}
-		if command == "!weatherzip" {
-			praise, _ := WeatherZip(content)
 			_, _ = s.ChannelMessageSend(m.ChannelID, praise)
 		}
 

@@ -7,21 +7,23 @@ import (
 )
 
 var (
-	Token      string
-	BotPrefix  string
-	MCServer   string
-	MCPort     string
-	WeatherAPI string
+	Token         string
+	BotPrefix     string
+	MCServer      string
+	MCPort        string
+	GoogleAPIkey  string
+	DarkSkyAPIkey string
 
 	config *configStruct
 )
 
 type configStruct struct {
-	Token      string `json:"Token"`
-	BotPrefix  string `json:"BotPrefix"`
-	MCServer   string `json:"MCServer"`
-	MCPort     string `json:"MCPort"`
-	WeatherAPI string `json:"WeatherAPI"`
+	Token         string `json:"Token"`
+	BotPrefix     string `json:"BotPrefix"`
+	MCServer      string `json:"MCServer"`
+	MCPort        string `json:"MCPort"`
+	GoogleAPIkey  string `json:"GoogleAPIkey"`
+	DarkSkyAPIkey string `json:"DarkSkyAPIkey"`
 }
 
 func ReadConfig() error {
@@ -45,7 +47,9 @@ func ReadConfig() error {
 	BotPrefix = config.BotPrefix
 	MCServer = config.MCServer
 	MCPort = config.MCPort
-	WeatherAPI = config.WeatherAPI
+
+	GoogleAPIkey = config.GoogleAPIkey
+	DarkSkyAPIkey = config.DarkSkyAPIkey
 
 	return nil
 
