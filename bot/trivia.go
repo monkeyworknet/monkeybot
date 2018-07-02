@@ -10,7 +10,7 @@ import (
 
 	"github.com/mndrix/rand"
 	"github.com/monkeyworknet/monkeybot/config"
-	scribble "github.com/nanobox-io/golang-scribble"
+	"github.com/nanobox-io/golang-scribble"
 )
 
 type PlayersDB struct {
