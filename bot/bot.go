@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/mndrix/rand"
@@ -22,6 +23,7 @@ type question struct {
 	correct    string
 	options    []string
 	answered   bool
+	time       time.Time
 }
 
 type opentdb struct {
@@ -44,7 +46,7 @@ var currentq question
 func Start() {
 	fmt.Println("Starting Bot..")
 
-	currentq = question{"general", "easy", "sky is blue", "true", []string{"true", "false"}, true}
+	currentq = question{"general", "easy", "sky is blue", "true", []string{"true", "false"}, true, time.Now()}
 
 	GoBot, err := discordgo.New("Bot " + config.Token)
 
