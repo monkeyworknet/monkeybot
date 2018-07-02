@@ -138,8 +138,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			x := &currentq
 			var response string
 			*x, response = answer(currentq, content)
-			response = "@" + m.Author.Username + " " + response
-
+			theuser := fmt.Sprintf("<@%v>", m.Author.ID)
+			response = theuser + " " + response
 			_, _ = s.ChannelMessageSend(m.ChannelID, response)
 
 		}
