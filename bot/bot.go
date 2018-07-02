@@ -45,9 +45,7 @@ var currentq question
 
 func Start() {
 	fmt.Println("Starting Bot..")
-
 	currentq = question{"general", "easy", "sky is blue", "true", []string{"true", "false"}, true, time.Now()}
-
 	GoBot, err := discordgo.New("Bot " + config.Token)
 
 	if err != nil {
@@ -152,7 +150,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			fmt.Println(currentq)
 			x := &currentq
 			var response string
-			*x, response = answer(currentq, content)
+			*x, response = answer(currentq, content, m.Author.ID, m.Author.Username)
 			theuser := fmt.Sprintf("<@%v>", m.Author.ID)
 			response = theuser + " " + response
 			_, _ = s.ChannelMessageSend(m.ChannelID, response)

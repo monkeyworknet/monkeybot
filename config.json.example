@@ -4,6 +4,9 @@
   "MCServer": "",
   "MCPort": "2556",
   "GoogleAPIkey" : "",
-  "DarkSkyAPIkey" : ""
+  "DarkSkyAPIkey" : "",
+  "DatabasePath": "",
+  "DatabaseName": ""
+
 }
 

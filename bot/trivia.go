@@ -9,10 +9,86 @@ import (
 	"time"
 
 	"github.com/mndrix/rand"
+	"github.com/monkeyworknet/monkeybot/config"
+	scribble "github.com/nanobox-io/golang-scribble"
 )
 
-func answer(question question, answer []string) (question, string) {
+type PlayersDB struct {
+	playerID      string `json:"playerID"`
+	playerName    string `json:"playerName"`
+	totalGuessed  int    `json:"totalGuessed"`
+	currentPoints int    `json:"currentPoints"`
+}
 
+func updatescore(score int, senderid string, sendername string) bool {
+
+	db, err := scribble.New(config.DatabasePath, nil)
+	if err != nil {
+		fmt.Println("FATAL Error creating db", err)
+		return false
+	}
+
+	playerread := PlayersDB{}
+
+	// End of DB Trivia Setup
+
+	// Read in current values from DB
+
+	if err := db.Read(config.DatabaseName, senderid, &playerread); err != nil {
+		fmt.Printf("%v not found, creating new entry for them", sendername)
+		// Default Values if user doesn't exist
+		playerID := senderid
+		playerName := sendername
+		totalGuessed := 1
+		currentPoints := score
+
+		playerwrite := PlayersDB{playerID, playerName, totalGuessed, currentPoints}
+		if err := db.Write(config.DatabaseName, senderid, playerwrite); err != nil {
+			fmt.Printf("Error - Couldn't create db entry for %v - %v", senderid, err)
+			return false
+		}
+
+		return true
+
+	}
+
+	// Update values
+
+	playerread.playerID = senderid
+	playerread.playerName = sendername
+	playerread.totalGuessed = playerread.totalGuessed + 1
+	playerread.currentPoints = playerread.currentPoints + score
+	playerwrite := PlayersDB{playerread.playerID, playerread.playerName, playerread.totalGuessed, playerread.currentPoints}
+	if err := db.Write(config.DatabaseName, senderid, playerwrite); err != nil {
+		fmt.Printf("Error - Couldn't create db entry for %v - %v", senderid, err)
+		return false
+	}
+	return true
+
+}
+
+func readscore(senderid string) int {
+
+	db, err := scribble.New(config.DatabasePath, nil)
+	if err != nil {
+		fmt.Println("FATAL Error creating db", err)
+		return 0
+	}
+
+	playerread := PlayersDB{}
+
+	if err := db.Read(config.DatabaseName, senderid, &playerread); err != nil {
+		fmt.Printf("%v not found in DB", senderid)
+		return 0
+	}
+
+	return playerread.currentPoints
+
+}
+
+func answer(question question, answer []string, senderid string, sendername string) (question, string) {
+
+	score := 0
 	formatedanswer := append(answer[:0], answer[1:]...)
 	givenanswer := strings.Join(formatedanswer, " ")
 	currentq = question
@@ -37,8 +113,40 @@ func answer(question question, answer []string) (question, string) {
 
 	if givenanswer == correctanswer {
 		currentq.answered = true
+
+		if currentq.difficulty == "hard" {
+			score = 3
+		}
+
+		if currentq.difficulty == "medium" {
+			score = 2
+		}
+		if currentq.difficulty == "easy" {
+			score = 1
+		}
+
+		_ = updatescore(score, senderid, sendername)
+		score = readscore(senderid)
+		answeredcorrect = fmt.Sprintf("%v \nYou're Current Score is %v", answeredcorrect, score)
+
 		return currentq, answeredcorrect
+
 	}
+
+	if currentq.difficulty == "hard" {
+		score = -1
+	}
+
+	if currentq.difficulty == "medium" {
+		score = -1
+	}
+	if currentq.difficulty == "easy" {
+		score = -3
+	}
+
+	_ = updatescore(score, senderid, sendername)
+	score = readscore(senderid)
+	answeredwrong = fmt.Sprintf("%v \nYou're Current Score is %v", answeredwrong, score)
 
 	currentq.answered = true
 	return currentq, answeredwrong

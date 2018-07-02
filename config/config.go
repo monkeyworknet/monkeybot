@@ -13,6 +13,8 @@ var (
 	MCPort        string
 	GoogleAPIkey  string
 	DarkSkyAPIkey string
+	DatabasePath  string
+	DatabaseName  string
 
 	config *configStruct
 )
@@ -24,6 +26,8 @@ type configStruct struct {
 	MCPort        string `json:"MCPort"`
 	GoogleAPIkey  string `json:"GoogleAPIkey"`
 	DarkSkyAPIkey string `json:"DarkSkyAPIkey"`
+	DatabasePath  string `json:"DatabasePath"`
+	DatabaseName  string `json:"DatabaseName`
 }
 
 func ReadConfig() error {
@@ -50,6 +54,9 @@ func ReadConfig() error {
 
 	GoogleAPIkey = config.GoogleAPIkey
 	DarkSkyAPIkey = config.DarkSkyAPIkey
+
+	DatabaseName = config.DatabaseName
+	DatabasePath = config.DatabasePath
 
 	return nil
 
