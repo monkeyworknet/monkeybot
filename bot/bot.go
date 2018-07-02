@@ -123,6 +123,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 					Question:   %v  
 					Possible Answers:  %v`, currentq.category, currentq.difficulty, currentq.question, choices)
 				_, _ = s.ChannelMessageSend(m.ChannelID, formattedquestion)
+				fmt.Println(currentq)
 
 			} else {
 				formattedquestion := fmt.Sprintf(`  
@@ -136,6 +137,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 
 		if command == "!answer" {
+			fmt.Println(currentq)
 			x := &currentq
 			var response string
 			*x, response = answer(currentq, content)
@@ -166,8 +168,13 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 
 		if command == "!weather" {
-			weatherres, _ := Weather(content)
-			_, _ = s.ChannelMessageSend(m.ChannelID, weatherres)
+			if len(content) > 1 {
+				weatherres, _ := Weather(content)
+				_, _ = s.ChannelMessageSend(m.ChannelID, weatherres)
+			} else {
+				_, _ = s.ChannelMessageSend(m.ChannelID, "yes weather exists. try telling me a city")
+			}
+
 		}
 
 		if command == "!joke" {
