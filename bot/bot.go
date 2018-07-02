@@ -36,7 +36,7 @@ type opentdb struct {
 	} `json:"results"`
 }
 
-var questionurl = "https://opentdb.com/api.php?amount=10&category=9"
+var questionurl = "https://opentdb.com/api.php?amount=10&type=multiple"
 var currentq question
 
 // end of trivia additions
@@ -115,13 +115,15 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			if currentq.answered {
 				fmt.Println("grabbing a new question")
 				currentq, _ = ask()
-				formattedquestion := fmt.Sprintf(`Current Category: %v  | Difficulty:  %v
+				formattedquestion := fmt.Sprintf(`
+					Current Category: %v  | Difficulty:  %v
 					Question:   %v  
 					Possible Answers:  %v`, currentq.category, currentq.difficulty, currentq.question, currentq.options)
 				_, _ = s.ChannelMessageSend(m.ChannelID, formattedquestion)
 
 			} else {
-				formattedquestion := fmt.Sprintf(`  There is currently an unanswered question - finish it first please.
+				formattedquestion := fmt.Sprintf(`  
+					There is currently an unanswered question - finish it first please.
 					Current Category: %v  | Difficulty:  %v
 					Question:   %v  
 					Possible Answers:  %v`, currentq.category, currentq.difficulty, currentq.question, currentq.options)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"sort"
+	"strings"
 
 	"github.com/mndrix/rand"
 )
@@ -12,12 +13,12 @@ import (
 func answer(question question, answer []string) (question, string) {
 
 	currentq = question
-	correctanswer := currentq.correct
-	givenanswer := answer[1]
+	correctanswer := strings.ToLower(currentq.correct)
+	givenanswer := strings.ToLower(answer[1])
 
 	newquestionplease := "This Question has already been answered, please ask a new one"
 	answeredcorrect := "That's correct, the right answer was " + correctanswer
-	answeredwrong := "Sorry " + givenanswer + "is Wrong,  the right answer was " + correctanswer
+	answeredwrong := fmt.Sprintf("Sorry %v is Wrong,  the right answer was %v", givenanswer, correctanswer)
 
 	if currentq.answered {
 		return currentq, newquestionplease
