@@ -117,10 +117,11 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			if currentq.answered {
 				fmt.Println("grabbing a new question")
 				currentq, _ = ask()
+				choices := strings.Join(currentq.options, " | ")
 				formattedquestion := fmt.Sprintf(`
 					Current Category: %v  | Difficulty:  %v
 					Question:   %v  
-					Possible Answers:  %v`, currentq.category, currentq.difficulty, currentq.question, currentq.options)
+					Possible Answers:  %v`, currentq.category, currentq.difficulty, currentq.question, choices)
 				_, _ = s.ChannelMessageSend(m.ChannelID, formattedquestion)
 
 			} else {
