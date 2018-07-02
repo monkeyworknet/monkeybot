@@ -138,7 +138,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			x := &currentq
 			var response string
 			*x, response = answer(currentq, content)
-			response = "@" + m.Author.Username + " " + content
+			response = "@" + m.Author.Username + " " + response
 
 			_, _ = s.ChannelMessageSend(m.ChannelID, response)
 
