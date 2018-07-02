@@ -125,7 +125,8 @@ func answer(question question, answer []string, senderid string, sendername stri
 			score = 1
 		}
 
-		_ = updatescore(score, senderid, sendername)
+		res := updatescore(score, senderid, sendername)
+		fmt.Println(res)
 		score = readscore(senderid)
 		answeredcorrect = fmt.Sprintf("%v \nYou're Current Score is %v", answeredcorrect, score)
 
@@ -144,7 +145,8 @@ func answer(question question, answer []string, senderid string, sendername stri
 		score = -3
 	}
 
-	_ = updatescore(score, senderid, sendername)
+	res := updatescore(score, senderid, sendername)
+	fmt.Println(res)
 	score = readscore(senderid)
 	answeredwrong = fmt.Sprintf("%v \nYou're Current Score is %v", answeredwrong, score)
 
