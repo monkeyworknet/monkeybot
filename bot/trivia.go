@@ -12,9 +12,11 @@ import (
 
 func answer(question question, answer []string) (question, string) {
 
+	formatedanswer := append(answer[:0], answer[1:]...)
+	givenanswer := strings.Join(formatedanswer, " ")
 	currentq = question
 	correctanswer := strings.ToLower(currentq.correct)
-	givenanswer := strings.ToLower(answer[1])
+	givenanswer = strings.ToLower(givenanswer)
 
 	newquestionplease := "This Question has already been answered, please ask a new one"
 	answeredcorrect := "That's correct, the right answer was " + correctanswer

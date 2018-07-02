@@ -101,6 +101,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 					!cat (will return a random kitty picture)
 					!dog <breed> (will return a random dog pic, you can also include breed to narrow it down)
 					!weather <city, state> (will return current weather for the city in question).
+					!ask will prompt the bot to ask a trivia question
+					!answer will let you answer the current trivia question
 			`
 			_, _ = s.ChannelMessageSend(m.ChannelID, output)
 		}
@@ -136,6 +138,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			x := &currentq
 			var response string
 			*x, response = answer(currentq, content)
+			response = "@" + m.Author.Username + " " + content
 
 			_, _ = s.ChannelMessageSend(m.ChannelID, response)
 
