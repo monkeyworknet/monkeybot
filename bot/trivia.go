@@ -42,7 +42,7 @@ func updatescore(score int, senderid string, sendername string) bool {
 		totalGuessed := 1
 		currentPoints := score
 
-		playerwrite := PlayersDB{playerID, playerName, totalGuessed, currentPoints}
+		playerwrite := PlayersDB{playerID: playerID, playerName: playerName, totalGuessed: totalGuessed, currentPoints: currentPoints}
 		if err := db.Write(config.DatabaseName, senderid, playerwrite); err != nil {
 			fmt.Printf("Error - Couldn't create db entry for %v - %v", senderid, err)
 			return false
@@ -58,7 +58,7 @@ func updatescore(score int, senderid string, sendername string) bool {
 	playerread.playerName = sendername
 	playerread.totalGuessed = playerread.totalGuessed + 1
 	playerread.currentPoints = playerread.currentPoints + score
-	playerwrite := PlayersDB{playerread.playerID, playerread.playerName, playerread.totalGuessed, playerread.currentPoints}
+	playerwrite := PlayersDB{playerID: playerread.playerID, playerName: playerread.playerName, totalGuessed: playerread.totalGuessed, currentPoints: playerread.currentPoints}
 	if err := db.Write(config.DatabaseName, senderid, playerwrite); err != nil {
 		fmt.Printf("Error - Couldn't create db entry for %v - %v", senderid, err)
 		return false
