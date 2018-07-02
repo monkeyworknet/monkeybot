@@ -47,7 +47,7 @@ func updatescore(score int, senderid string, sendername string) bool {
 			fmt.Printf("Error - Couldn't create db entry for %v - %v", senderid, err)
 			return false
 		}
-
+		fmt.Println(playerwrite)
 		return true
 
 	}
@@ -63,6 +63,7 @@ func updatescore(score int, senderid string, sendername string) bool {
 		fmt.Printf("Error - Couldn't create db entry for %v - %v", senderid, err)
 		return false
 	}
+	fmt.Println(playerwrite)
 	return true
 
 }
