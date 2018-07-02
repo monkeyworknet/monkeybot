@@ -118,6 +118,10 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				fmt.Println("grabbing a new question")
 				currentq, _ = ask()
 				choices := strings.Join(currentq.options, " | ")
+				var replacer = strings.NewReplacer("&#039;", "'", "&quot;", "\"")
+				currentq.question = replacer.Replace(currentq.question)
+				choices = replacer.Replace(choices)
+
 				formattedquestion := fmt.Sprintf(`
 					Current Category: %v  | Difficulty:  %v
 					Question:   %v  
@@ -126,6 +130,10 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				fmt.Println(currentq)
 
 			} else {
+				choices := strings.Join(currentq.options, " | ")
+				var replacer = strings.NewReplacer("&#039;", "'", "&quot;", "\"")
+				currentq.question = replacer.Replace(currentq.question)
+				choices = replacer.Replace(choices)
 				formattedquestion := fmt.Sprintf(`  
 					There is currently an unanswered question - finish it first please.
 					Current Category: %v  | Difficulty:  %v
