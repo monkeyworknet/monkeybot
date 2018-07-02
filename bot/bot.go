@@ -13,8 +13,38 @@ import (
 var BotID string
 var GoBot *discordgo.Session
 
+// adding some stuff for trivia functions
+
+type question struct {
+	category   string
+	difficulty string
+	question   string
+	correct    string
+	options    []string
+	answered   bool
+}
+
+type opentdb struct {
+	ResponseCode int `json:"response_code"`
+	Results      []struct {
+		Category         string   `json:"category"`
+		Type             string   `json:"type"`
+		Difficulty       string   `json:"difficulty"`
+		Question         string   `json:"question"`
+		CorrectAnswer    string   `json:"correct_answer"`
+		IncorrectAnswers []string `json:"incorrect_answers"`
+	} `json:"results"`
+}
+
+var questionurl = "https://opentdb.com/api.php?amount=10&category=9"
+var currentq question
+
+// end of trivia additions
+
 func Start() {
 	fmt.Println("Starting Bot..")
+
+	currentq = question{"general", "easy", "sky is blue", "true", []string{"true", "false"}, true}
 
 	GoBot, err := discordgo.New("Bot " + config.Token)
 
@@ -78,6 +108,39 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		if command == "!ping" {
 			_, _ = s.ChannelMessageSend(m.ChannelID, "Pong")
 		}
+
+		// Trivia Commands
+
+		if command == "!ask" {
+			if currentq.answered {
+				fmt.Println("grabbing a new question")
+				currentq, _ = ask()
+				formattedquestion := fmt.Sprintf(`Current Category: %v  | Difficulty:  %v
+					Question:   %v  
+					Possible Answers:  %v`, currentq.category, currentq.difficulty, currentq.question, currentq.options)
+				_, _ = s.ChannelMessageSend(m.ChannelID, formattedquestion)
+
+			} else {
+				formattedquestion := fmt.Sprintf(`  There is currently an unanswered question - finish it first please.
+					Current Category: %v  | Difficulty:  %v
+					Question:   %v  
+					Possible Answers:  %v`, currentq.category, currentq.difficulty, currentq.question, currentq.options)
+				_, _ = s.ChannelMessageSend(m.ChannelID, formattedquestion)
+			}
+
+		}
+
+		if command == "!answer" {
+			x := &currentq
+			var response string
+			*x, response = answer(currentq, content)
+
+			_, _ = s.ChannelMessageSend(m.ChannelID, response)
+
+		}
+
+		// End of Trivia Commands
+
 		if command == "!online" {
 			playerlist, playercount, _ := WhoIsOnline()
 			playerscountstring := "**Number of Active Players:** " + strconv.Itoa(playercount)
@@ -97,8 +160,8 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 
 		if command == "!weather" {
-			praise, _ := Weather(content)
-			_, _ = s.ChannelMessageSend(m.ChannelID, praise)
+			weatherres, _ := Weather(content)
+			_, _ = s.ChannelMessageSend(m.ChannelID, weatherres)
 		}
 
 		if command == "!joke" {
