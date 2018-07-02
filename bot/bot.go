@@ -121,6 +121,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				var replacer = strings.NewReplacer("&#039;", "'", "&quot;", "\"")
 				currentq.question = replacer.Replace(currentq.question)
 				choices = replacer.Replace(choices)
+				currentq.correct = replacer.Replace(currentq.correct)
 
 				formattedquestion := fmt.Sprintf(`
 					Current Category: %v  | Difficulty:  %v
@@ -134,6 +135,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				var replacer = strings.NewReplacer("&#039;", "'", "&quot;", "\"")
 				currentq.question = replacer.Replace(currentq.question)
 				choices = replacer.Replace(choices)
+				currentq.correct = replacer.Replace(currentq.correct)
 				formattedquestion := fmt.Sprintf(`  
 					There is currently an unanswered question - finish it first please.
 					Current Category: %v  | Difficulty:  %v
