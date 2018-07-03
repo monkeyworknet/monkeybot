@@ -103,6 +103,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 					!weather <city, state> (will return current weather for the city in question).
 					!ask will prompt the bot to ask a trivia question
 					!answer will let you answer the current trivia question
+					!highscore will show you the highscore of the trivia game
 			`
 			_, _ = s.ChannelMessageSend(m.ChannelID, output)
 		}
@@ -163,6 +164,11 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 			response = theuser + " " + response
 			_, _ = s.ChannelMessageSend(m.ChannelID, response)
 
+		}
+
+		if command == "!highscore" {
+			response := highscore()
+			_, _ = s.ChannelMessageSend(m.ChannelID, response)
 		}
 
 		// End of Trivia Commands
