@@ -2,6 +2,7 @@ package bot
 
 import (
 	"fmt"
+	"html"
 	"strconv"
 	"strings"
 	"time"
@@ -119,10 +120,13 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				fmt.Println("grabbing a new question")
 				currentq, _ = ask()
 				choices := strings.Join(currentq.options, " | ")
-				var replacer = strings.NewReplacer("&#039;", "'", "&quot;", "\"")
-				currentq.question = replacer.Replace(currentq.question)
-				choices = replacer.Replace(choices)
-				currentq.correct = replacer.Replace(currentq.correct)
+
+				// input and output cleanup
+				// html escapes
+				currentq.question = html.UnescapeString(currentq.question)
+				choices = html.UnescapeString(choices)
+				currentq.correct = html.UnescapeString(currentq.correct)
+				// trim whitespace
 				currentq.correct = strings.TrimSpace(currentq.correct)
 				currentq.question = strings.TrimSpace(currentq.question)
 				choices = strings.TrimSpace(choices)
@@ -136,11 +140,12 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 			} else {
 				choices := strings.Join(currentq.options, " | ")
-				var replacer = strings.NewReplacer("&#039;", "'", "&quot;", "\"")
-				currentq.question = replacer.Replace(currentq.question)
-				choices = replacer.Replace(choices)
-				currentq.correct = replacer.Replace(currentq.correct)
-
+				// input and output cleanup
+				// html escapes
+				currentq.question = html.UnescapeString(currentq.question)
+				choices = html.UnescapeString(choices)
+				currentq.correct = html.UnescapeString(currentq.correct)
+				// trim whitespace
 				currentq.correct = strings.TrimSpace(currentq.correct)
 				currentq.question = strings.TrimSpace(currentq.question)
 				choices = strings.TrimSpace(choices)
