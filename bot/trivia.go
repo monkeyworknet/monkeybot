@@ -187,3 +187,68 @@ func ask() (question, error) {
 	fmt.Println(currentq.answered)
 	return currentq, nil
 }
+
+func highscore() (response string) {
+
+	db, err := scribble.New(config.DatabasePath, nil)
+	if err != nil {
+		fmt.Println("FATAL Error creating db", err)
+	}
+
+	type kv struct {
+		Key   string
+		Value int
+	}
+
+	records, err := db.ReadAll(config.DatabaseName)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	var ss []kv
+	// broken out all the records into both a slice set and a map for testing
+	for _, p := range records {
+		player := PlayersDB{}
+		if err := json.Unmarshal([]byte(p), &player); err != nil {
+			fmt.Println(err)
+		}
+		ss = append(ss, kv{player.Playerid, player.Currentpoints})
+	}
+
+	fmt.Println(ss)
+
+	// sorting out the slice set
+
+	sort.Slice(ss, func(i, j int) bool {
+		return ss[i].Value > ss[j].Value
+	})
+
+	for _, kv := range ss {
+		fmt.Printf("%s, %d\n", kv.Key, kv.Value)
+	}
+
+	// High Score Board will be Top 5, or fewer if there are less players
+	top := 5
+	if len(ss) < top {
+		top = len(ss)
+	}
+	fmt.Println(top)
+
+	highscorelist := "***Trivia Leader Board.***\n(#) = Times played. \n\n"
+
+	for i := 0; i < (top); i++ {
+		fmt.Println(i)
+		playerread := PlayersDB{}
+		if err := db.Read(config.DatabaseName, ss[(i)].Key, &playerread); err != nil {
+			fmt.Printf("%v not found", ss[(i)].Key)
+		}
+
+		lineitem := fmt.Sprintf("***%v*** (%v) \t %v\n", playerread.Currentpoints, playerread.Totalguessed, playerread.Playername)
+		highscorelist = highscorelist + lineitem
+
+	}
+
+	fmt.Println(highscorelist)
+	return highscorelist
+
+}
