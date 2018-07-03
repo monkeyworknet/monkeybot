@@ -96,6 +96,7 @@ func answer(question question, answer []string, senderid string, sendername stri
 	score := 0
 	formatedanswer := append(answer[:0], answer[1:]...)
 	givenanswer := strings.Join(formatedanswer, " ")
+	givenanswer = strings.TrimSpace(givenanswer)
 	currentq = question
 	correctanswer := strings.ToLower(currentq.correct)
 	givenanswer = strings.ToLower(givenanswer)

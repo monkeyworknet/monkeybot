@@ -122,6 +122,9 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				currentq.question = replacer.Replace(currentq.question)
 				choices = replacer.Replace(choices)
 				currentq.correct = replacer.Replace(currentq.correct)
+				currentq.correct = strings.TrimSpace(currentq.correct)
+				currentq.question = strings.TrimSpace(currentq.question)
+				choices = strings.TrimSpace(choices)
 
 				formattedquestion := fmt.Sprintf(`
 					Current Category: %v  | Difficulty:  %v
@@ -136,6 +139,11 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 				currentq.question = replacer.Replace(currentq.question)
 				choices = replacer.Replace(choices)
 				currentq.correct = replacer.Replace(currentq.correct)
+
+				currentq.correct = strings.TrimSpace(currentq.correct)
+				currentq.question = strings.TrimSpace(currentq.question)
+				choices = strings.TrimSpace(choices)
+
 				formattedquestion := fmt.Sprintf(`  
 					There is currently an unanswered question - finish it first please.
 					Current Category: %v  | Difficulty:  %v
