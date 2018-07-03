@@ -14,10 +14,10 @@ import (
 )
 
 type PlayersDB struct {
-	playerID      string `json:"playerID"`
-	playerName    string `json:"playerName"`
-	totalGuessed  int    `json:"totalGuessed"`
-	currentPoints int    `json:"currentPoints"`
+	Playerid      string `json:"playerid"`
+	Playername    string `json:"playername"`
+	Totalguessed  int    `json:"totalguessed"`
+	Currentpoints int    `json:"currentpoints"`
 }
 
 func updatescore(score int, senderid string, sendername string) bool {
@@ -42,7 +42,9 @@ func updatescore(score int, senderid string, sendername string) bool {
 		totalGuessed := 1
 		currentPoints := score
 
-		playerwrite := PlayersDB{playerID: playerID, playerName: playerName, totalGuessed: totalGuessed, currentPoints: currentPoints}
+		//		playerwrite := PlayersDB{playerID: playerID, playerName: playerName, totalGuessed: totalGuessed, currentPoints: currentPoints}
+		playerwrite := PlayersDB{Playerid: playerID, Playername: playerName, Totalguessed: totalGuessed, Currentpoints: currentPoints}
+
 		if err := db.Write(config.DatabaseName, senderid, playerwrite); err != nil {
 			fmt.Printf("Error - Couldn't create db entry for %v - %v", senderid, err)
 			return false
@@ -54,11 +56,13 @@ func updatescore(score int, senderid string, sendername string) bool {
 
 	// Update values
 
-	playerread.playerID = senderid
-	playerread.playerName = sendername
-	playerread.totalGuessed = playerread.totalGuessed + 1
-	playerread.currentPoints = playerread.currentPoints + score
-	playerwrite := PlayersDB{playerID: playerread.playerID, playerName: playerread.playerName, totalGuessed: playerread.totalGuessed, currentPoints: playerread.currentPoints}
+	playerread.Playerid = senderid
+	playerread.Playername = sendername
+	playerread.Totalguessed = playerread.Totalguessed + 1
+	playerread.Currentpoints = playerread.Currentpoints + score
+	playerwrite := PlayersDB{Playerid: playerread.Playerid, Playername: playerread.Playername, Totalguessed: playerread.Totalguessed, Currentpoints: playerread.Currentpoints}
+
+	//playerwrite := PlayersDB{playerID: playerread.playerID, playerName: playerread.playerName, totalGuessed: playerread.totalGuessed, currentPoints: playerread.currentPoints}
 	if err := db.Write(config.DatabaseName, senderid, playerwrite); err != nil {
 		fmt.Printf("Error - Couldn't create db entry for %v - %v", senderid, err)
 		return false
@@ -83,7 +87,7 @@ func readscore(senderid string) int {
 		return 0
 	}
 
-	return playerread.currentPoints
+	return playerread.Currentpoints
 
 }
 
