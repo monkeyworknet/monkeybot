@@ -121,14 +121,14 @@ func answer(question question, answer []string, senderid string, sendername stri
 		currentq.answered = true
 
 		if currentq.difficulty == "hard" {
-			score = 3
+			score = 10
 		}
 
 		if currentq.difficulty == "medium" {
-			score = 2
+			score = 5
 		}
 		if currentq.difficulty == "easy" {
-			score = 1
+			score = 3
 		}
 
 		res := updatescore(score, senderid, sendername)
@@ -145,7 +145,7 @@ func answer(question question, answer []string, senderid string, sendername stri
 	}
 
 	if currentq.difficulty == "medium" {
-		score = -1
+		score = -2
 	}
 	if currentq.difficulty == "easy" {
 		score = -3
