@@ -228,7 +228,7 @@ func highscore() (response string) {
 	}
 
 	// High Score Board will be Top 5, or fewer if there are less players
-	top := 5
+	top := 10
 	if len(ss) < top {
 		top = len(ss)
 	}
